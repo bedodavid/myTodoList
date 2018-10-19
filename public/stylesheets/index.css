@@ -1,0 +1,171 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 100%;
+  background: #fff;
+  min-height: 100%;
+  overflow-y: scroll;
+  box-sizing: border-box;
+}
+
+body {
+  background: #ffffff;
+  font-family: tahoma;
+  color: #989898;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.todo-overflow-hidden {
+  overflow: hidden;
+  display: block;
+}
+
+.header-row {
+  height: 5.2rem;
+  width: 100%;
+  background: #ffffff;
+  border-bottom: 2px solid #c4c4c4;
+  box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.08);
+  position: fixed;
+  transition: background-color .3s ease overflow: hidden;
+  display: block;
+  z-index: 999;
+}
+
+.header-row::after {
+  clear: both;
+}
+
+.brand-logo-name {
+  margin: 3px;
+}
+
+.menubar-container {
+  width: 60%;
+  height: 5rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.brand-logo-name {
+  width: 30%;
+}
+
+.menubar-actions-container {
+  width: 60%;
+  padding: 0;
+}
+
+.menubar-actions {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin: 5px 0 5px 0;
+  padding: 10px 0 10px 0;
+}
+
+.menubar__action-link {
+  padding: 16px 10px 16px 10px;
+  text-decoration: none;
+}
+
+li a {
+  color: black;
+  text-align: center;
+  margin: 10px 0 10px 0;
+  font-size: 20px;
+}
+
+li a:hover {
+  color: green;
+  border-bottom: solid 3px green;
+}
+
+.features {
+  padding-left: 100px;
+  padding-right: 100px;
+  vertical-align: middle;
+  margin-top: 5rem;
+}
+
+.features-wrapper {
+  display: block;
+  position: relative;
+}
+
+.features-wrapper .feature-row {
+  margin: 0 auto;
+  padding-top: 5px;
+}
+
+.feature-row {
+  max-width: 1200px;
+  width: 70%;
+  display:flex;
+}
+
+.row-reverse{
+  flex-direction: row-reverse;
+}
+
+.feature-row .image{
+  justify-content:flex-start;
+}
+
+.row-reverse .image{
+  justify-content:flex-end;
+}
+
+@media screen and (max-width:640px) {
+  .feature-row {
+    margin-top: 30px;
+  }
+}
+
+.feature-item-icon{
+  vertical-align:middle;
+}
+
+.feature-item-picture {
+  width: 250px;
+  height: 250px;
+  float:right;
+  }
+
+.feature-item-picture img {
+  max-width: 100%;
+  max-height: auto;
+
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.col {
+  width: 50%;
+  padding-left: 20px;
+  padding-right: 20px;
+  vertical-align:middle;
+  display: flex;
+  justify-content: center;
+}
+
+.feature-row .col h3 {
+  font-size: 30px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+
+.description-holder{
+  display: block;
+}

@@ -1,0 +1,41 @@
+<html>
+<head>
+  <title> Todo List</title>
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <!-- <script src="javascripts/signUp.js"></script>-->
+  <link href="./stylesheets/signUp.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="bg-image"></div>
+  <div class="signUpWrapper">
+    <div class="signUp-header">
+      <p >sign up in seconds</p>
+      <div class="close">
+        <a href="/">X</a>
+      </div>
+    </div>
+    <div class="signUpContainer">
+      <form id="signUp-form" action="/register"  method="POST" autocomplete="off">
+        <input  id="input-name"  class="input-name" placeholder="Your name" type="text" name="fullName" id="fullName" value="<%= user.name %>">
+        <span  id="nameResp"    class="signUpresponse"><i><%= resp.name %><i></span>
+        <input  id="input-email" class="input-email" placeholder="Email" type="email" name="email" id="email" value="<%= user.email %>" autocomplete="off">
+        <span  id="emailResp"   class="signUpresponse"><i><%= resp.email %><i></span>
+        <input  id="input-pwd"   class="input-password" placeholder="Password" type="password" id="password" name="pwd" value="" autocomplete="off" aria-autocomplete="list">
+        <span  id="pwdResp" class="signUpresponse"><i><%- resp.pwd %><i></span>
+        <input  id= "signUpSubmit" type="submit" class="accept_button"  value="Create a New Account">
+      </form>
+
+      <div class="login_terms_agreement">
+        <p class="showLogin"> Already has an account? <a class="navHref" href="/login"><b>Sign In</b> </a> </p>
+        <p> By creating your account you agree to <a class="navHref" href="/termsOfService"><b>Terms Of Service</b></a> and <a class="navHref" href="PrivacyPolicy"><b>Privacy Policy</b></a> .</p>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+
+</html>

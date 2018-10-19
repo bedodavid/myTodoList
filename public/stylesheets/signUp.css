@@ -1,0 +1,151 @@
+body {}
+
+.bg-image {
+  background-image: url("/images/bluredBackground.png");
+  filter: blur(5px);
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+}
+
+.signUpWrapper {
+  background-color: white;
+  position: absolute;
+  display: flex;
+  flex-direction:column;
+  align-items: center;
+  top: 10%;
+  left: 37.5%;
+  height: 30rem;
+  width: 25rem;
+  border: 3px solid #0B7A25;
+}
+
+.signUp-header{
+  width: 80%;
+  display: flex;
+  flex-direction:row;
+  padding:10px;
+}
+.signUp-header p{
+  justify-content: flex-start;
+  width: 90%;
+  margin: 10px 5px 10px 0px;
+}
+.signUp-header .close{
+  justify-content: flex-end;
+  margin: 10px 0 10px 0px;
+}
+
+.close:hover{
+  color: red;
+  cursor: pointer;
+}
+
+.signUpContainer {
+  height: 80%;
+  width: 80%;
+  display: flex;
+  flex-direction:column;
+  vertical-align: middle;
+  justify-content: center;
+  align-items: center;
+}
+
+.g-signin2 {
+  width: 100%;
+  margin: 5px, auto;
+}
+
+#signUp-form {
+  padding: 5px 2px 2px 0;
+  margin:10px;
+  vertical-align: middle;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#signUp-form input {
+  box-sizing: border-box margin-bottom: 1rem;
+  border-radius: 3px;
+  border: 1px solid #ddd;
+  width: 100%;
+  text-indent: 0px;
+  text-shadow: none;
+  font: 400 16px Arial;
+  padding: 13px 13px 13px 37px;
+  margin: 5px 5px 5px 5px;
+
+}
+
+.input-name {
+  background: url(/images/user20px.png) no-repeat scroll 10px 11px;
+padding-left:30px;
+}
+
+.input-email {
+  background: url(/images/mail20px.png) no-repeat scroll 10px 11px;
+padding-left:30px;
+}
+
+.input-password {
+  background: url(/images/password20px.png) no-repeat scroll 10px 11px;
+padding-left:30px;
+}
+
+#signUp-form .accept_button{
+  background-color: #1B9237;
+  padding: 13px 13px 13px 13px;
+}
+
+.login_terms_agreement p{
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.login_terms_agreement .showLogin{
+  font: 16px Arial;
+  margin-top:5px;
+}
+
+
+.accept_button:hover{
+  color:  white;
+  filter: brightness(90%);
+  cursor: pointer;
+}
+.navHref{
+  text-decoration: none;
+}
+
+.navHref:hover{
+  text-decoration: underline;
+}
+.signUpresponse{
+  font: 12px Arial;
+  color:red;
+  margin:25px;
+  white-space: pre;
+
+}
+
+.or-separator {
+  width: 100%;
+  border-bottom: solid 1px;
+  position: relative;
+  margin: 30px 0px;
+}
+
+.or-separator::before {
+  content: "Or";
+  position: absolute;
+  left: 47%;
+  top: -8px;
+  background-color: #fff;
+  padding: 0px 10px;
+}
+
+#signUp-form .input-notValid{
+  border-color:red;
+}

@@ -1,0 +1,82 @@
+<html>
+
+<head>
+  <title> Todo List</title>
+  <!-- jQuery library-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <link href="./stylesheets/todoapp.css" rel="stylesheet" type="text/css" />
+  <script src="./javascripts/todoapp.js"></script>
+</head>
+
+<body>
+  <div class="overflow-hidden">
+    <div class="main-container">
+      <div class="listside">
+        <div class="list-container">
+          <div id="search-toolbar" class="search-toolbar">
+            <span  class="toogle-listside" style="button">
+               <img class="toogle-listside-icon" src="/images/menu30.png" />
+             </span>
+            <input type="text" class="search-input">
+            <span  class="search-icon-container" style="button">
+               <img class="search-icon" src="/images/search26.png"/>
+             </span>
+          </div>
+          <div id="user-toolbar" class="user-toolbar">
+            <span class="user-icon-container" >
+               <img class="user-icon" src="/images/name50.png"/>
+             </span>
+            <span class="user-name"><%= user.name %></span>
+            <span style="visibility:hidden" class="user-id" id="user-id" value="<%= user.id %>"></span>
+
+          </div>
+          <div class="personal-list">
+            <div class="list-filters">
+
+            </div>
+            <hr>
+            <div id="list-collect" class="list-collect">
+              <ul class="myLists-ul">
+               <% var len=list.length;
+                for (let i=0; i < len; i++) { %>
+                  <li role="menuitem" class="list-items-li">
+                    <a href="#/lists/<%= list[i].id %>">
+                       <span class="list-icon-container" ><img class="list-icon" src="/images/listItem.png"/></span>
+                       <span class="list-name"><%= list[i].listname %></span>
+                       <span class="list-taskcount"></span>
+                       <span  class="list-options" title="List options" height="20" width="20" ><img class="list-icon" src="/images/editList.png"/></span>
+                    </a>
+                  </li>
+                  <% } %>
+            </ul>
+            </div>
+          </div>
+          <div id="newList-toolbar" class="newList-toolbar">
+            <a class="newList-icon-container" style="button">
+               <img  class="newList-icon" src="/images/addnew50.png"/>
+             </a>
+            <text class="newList-text" style="button">Add new List</text>
+          </div>
+        </div>
+
+      </div>
+      <div id="contentside" class="contentside">
+
+      </div>
+      <div id="newList-popup-container" class="newList-popup-container display-none" >
+        <h3> Add new List</h3>
+        <form action="/addListForm"  method="POST" class="addlist-form">
+        <input style="visibility:hidden" type="text" name="userID" id="userID" value="<%= user.id %>">
+        <input type="text" name= "listName" placeholder="New List Name" class="newlistname-input">
+        <div class="add-cancel-buttons">
+          <button  id="add-newlist" class="newlist-button" type="submit"  >Save</button>
+          <button id="cancel-newlist" class="newlist-button" type="button">Cancel</button>
+        </div>
+       </form>
+
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

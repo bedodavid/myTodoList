@@ -1,0 +1,42 @@
+<html>
+<head>
+  <title> Todo List</title>
+  <meta name="google-signin-scope" content="profile email">
+  <meta name="google-signin-client_id" content="myprojecttodolist-218114.apps.googleusercontent.com">
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+  <link href="./stylesheets/login.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+  <div class="bg-image"></div>
+  <div class="loginWrapper">
+    <div class="login-header">
+      <p >-- login in no time --</p>
+      <div class="close">
+        <a href="/">X</a>
+      </div>
+    </div>
+    <div class="loginContainer">
+        <form id="login-form" action="/login"  method="POST" autocomplete="off">
+        <input class="input-email" placeholder="Email" type="email" name="email" id="email" value="" autocomplete="off">
+        <span  id="emailResp"   class="signUpresponse"><i><%= resp %><i></span>
+        <input class="input-password" placeholder="Password" type="password" id="password" name="pwd" value="" autocomplete="off" aria-autocomplete="list">
+        <input type="submit" class="accept_button" value="Login to your Account">
+      </form>
+
+      <div class="accountManagement">
+        <a class="navHref" href="/resendPassword"><b>Forgot your password?</b> </a>
+        <div class="signUp">
+          <p > Do not have account yet? <a class="navHref" href="/signUp"><b>Sign Up</b></a> </p>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</body>
+
+</html>
