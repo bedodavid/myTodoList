@@ -1,4 +1,5 @@
 <html>
+
 <head>
   <title> Todo List</title>
   <!-- jQuery library -->
@@ -12,20 +13,20 @@
   <div class="bg-image"></div>
   <div class="signUpWrapper">
     <div class="signUp-header">
-      <p >sign up in seconds</p>
+      <p>sign up in seconds</p>
       <div class="close">
         <a href="/">X</a>
       </div>
     </div>
     <div class="signUpContainer">
-      <form id="signUp-form" action="/register"  method="POST" autocomplete="off">
-        <input  id="input-name"  class="input-name" placeholder="Your name" type="text" name="fullName" id="fullName" value="<%= user.name %>">
-        <span  id="nameResp"    class="signUpresponse"><i><%= resp.name %><i></span>
-        <input  id="input-email" class="input-email" placeholder="Email" type="email" name="email" id="email" value="<%= user.email %>" autocomplete="off">
-        <span  id="emailResp"   class="signUpresponse"><i><%= resp.email %><i></span>
-        <input  id="input-pwd"   class="input-password" placeholder="Password" type="password" id="password" name="pwd" value="" autocomplete="off" aria-autocomplete="list">
-        <span  id="pwdResp" class="signUpresponse"><i><%- resp.pwd %><i></span>
-        <input  id= "signUpSubmit" type="submit" class="accept_button"  value="Create a New Account">
+      <form id="signUp-form" action="/register" method="POST" autocomplete="off">
+        <input id="input-name" class="input-name" placeholder="Your name" type="text" name="fullName" id="fullName" value="<%= user.name %>" required>
+        <label id="nameResp" class="signUpresponse"><%= resp.name %></label>
+        <input id="input-email" class="input-email" placeholder="Email" type="email" name="email" id="email" value="<%= user.email %>" required>
+        <span id="emailResp" class="signUpresponse"><i><%= resp.email %><i></span>
+        <input id="input-pwd" class="input-password" placeholder="Password" type="password" id="password" name="pwd" value="" required>
+        <span id="pwdResp" class="signUpresponse"><i><%- resp.pwd %><i></span>
+        <input id="signUpSubmit" type="submit" class="accept_button" value="Create a New Account" >
       </form>
 
       <div class="login_terms_agreement">

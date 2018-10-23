@@ -20,9 +20,10 @@
     </div>
     <div class="loginContainer">
         <form id="login-form" action="/login"  method="POST" autocomplete="off">
-        <input class="input-email" placeholder="Email" type="email" name="email" id="email" value="" autocomplete="off">
-        <span  id="emailResp"   class="signUpresponse"><i><%= resp %><i></span>
-        <input class="input-password" placeholder="Password" type="password" id="password" name="pwd" value="" autocomplete="off" aria-autocomplete="list">
+        <input class="input-email" placeholder="Email" type="email" name="email" id="email" value="" required >
+        <span  id="emailResp"   class="signUpresponse"><i><%= resp.email %><i></span>
+        <input class="input-password" placeholder="Password" type="password" id="password" name="pwd" value="" required>
+        <span  id="pwdResp"   class="signUpresponse"><i><%= resp.pwd %><i></span>
         <input type="submit" class="accept_button" value="Login to your Account">
       </form>
 

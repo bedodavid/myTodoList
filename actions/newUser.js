@@ -1,5 +1,6 @@
 var db = require('../database/dbHandler');
 var List = require('../models/list');
+var getList = require('./getList');
 var async = require('async');
 
 
@@ -40,29 +41,14 @@ async function addList(user) {
   }
 }
 
-async function getLists(user){
-  let userID=user.id;
-  try {
-    let promiseListCollection = new Promise((resolve, reject) => {
-      resolve(db.getList(userID));
-    });
-    let result = await promiseListCollection;
-
-    var string=JSON.stringify(result);
-    var json =  JSON.parse(string);
-    return {user:user, list:json};
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-
 async function newUser(user) {
   try{
    let newUser = await addUser(user);
    let listAdded = await addList(newUser);
-   let result= await getLists(newUser);
-   return result;   
+   let myList= await getList.lists(newUser);
+   let result={user:newUser, list:myList}
+   return result;
+
  } catch(err){
    console.log(err); }
 }

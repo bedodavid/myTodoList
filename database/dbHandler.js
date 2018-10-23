@@ -38,6 +38,7 @@ exports.addUser = function(user) {
 });
 };
 
+
 exports.findUser = function(user) {
   return new Promise(function(resolve, reject){
     con.getConnection(function(err, tempCont) {
@@ -52,9 +53,9 @@ exports.findUser = function(user) {
           } else {
             resolve(res);
           }
-          tempCont.release();
         });
       }
+      tempCont.release();
     });
   });
 };
@@ -68,14 +69,16 @@ exports.addList = function(list) {
       throw err;
     } else {
       var sql = "INSERT INTO " + constants.list.LIST_TABLE + " (" + constants.list.LIST_USERID + ", " + constants.list.LIST_NAME + ") VALUES ?"
-      tempCont.query(sql, [list], function(err, res) {
+    tempCont.query(sql, [list], function(err, res) {
         if (err) {
           return reject(err);
         } else {
           resolve(res);
+
         }
       });
     }
+    tempCont.release();
   });
 });
 };
@@ -94,8 +97,30 @@ exports.getList = function(userID) {
         } else {
           resolve(res);
         }
+        });
+    }
+    tempCont.release();
+  });
+});
+};
+
+exports.getTask = function(userID) {
+  return new Promise(function(resolve, reject){
+  con.getConnection(function(err, tempCont) {
+    if (err) {
+      tempCont.release();
+      throw err;
+    } else {
+        var sql = "SELECT * FROM " + constants.task.TASK_TABLE + " WHERE " + constants.task.TASK_USERID + " =? ";
+      tempCont.query(sql, [userID], function(err, res) {
+        if (err) {
+          return reject(err);
+        } else {
+          resolve(res);
+        }
       });
     }
+    tempCont.release();
   });
 });
 };

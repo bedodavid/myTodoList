@@ -5,6 +5,8 @@ var Task = require('../models/task');
 var validateSignUp = require('../actions/validateSignUp');
 var validateLogin = require('../actions/validateLogin');
 var newUser = require('../actions/newUser');
+var loginUser = require('../actions/loginUser');
+var addList = require('../actions/addList');
 
 
 
@@ -14,8 +16,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/signUp', function(req, res, next) {
-  const user = {name: "",email: "",psw: ""};
-  const errResp = {name: "",email: "",psw: ""};
+  const user = {name: "", email: "", psw: ""};
+  const errResp = {name: "", email: "", psw: ""};
 
   if(!req.session.user){
     req.session.user=user;
@@ -27,20 +29,19 @@ router.get('/signUp', function(req, res, next) {
 
 
 router.get('/login', function(req, res, next) {
-  const emailResp="";
-
-  if(!req.session.emailResp){
-    req.session.emailResp=emailResp;
+  const errResp = {email:"", pwd:""};
+  if(!req.session.resp){
+    req.session.resp=errResp;
   }
-  console.log(emailResp);
-  res.render('login',  {resp:req.session.emailResp });
-  req.session.destroy();
+  console.log(req.session.resp);
+  res.render('login',  {resp:req.session.resp });
 });
+
 
 
 router.get('/todoapp', function(req, res, next) {
   res.render('todoapp',{user: req.session.user, list:req.session.list, task:req.session.task});
-  //req.session.destroy();
+
 });
 
 
@@ -83,25 +84,43 @@ router.post('/register', function(req, res, next){
    const email = req.body.email;
    const password = req.body.pwd;
    var user = new User(0,"",email,password);
-
    let promise = new Promise((resolve, reject) => {
      resolve(validateLogin.valid(user));
    });
 
    promise.then(function(result){
-     console.log(result);
-     console.log("here");
      var succesValidate=result.formvalid;
      if (!succesValidate){
-       req.session.emailResp = result.emailResp;
+       req.session.resp = result.resp;
        res.redirect('login');
      }else{
-       res.redirect('todoapp');
+       let promiseResp = new Promise((resolve, reject) => {
+         resolve(loginUser.login(result.user));
+       });
+       promiseResp.then(function(response){
+         req.session.user= response.user;
+         req.session.list= response.list;
+         req.session.task=response.task;
+         res.redirect('/todoapp');
+       });
      }
    })
    .catch(e=>{console.error(e)});
-
   });
+router.post('/addList', function(req, res, next){
+  let newList=req.body.listName;
+  let user=req.session.user;
+  let promiseList = new Promise((resolve, reject) => {
+    resolve(addList.add(user,newList));
+  });
+   promiseList.then( function (response){
+     console.log(response);
+     console.log(req.session.list);
+     req.session.list.push(response) ;
+     console.log(req.session.list);
+     res.redirect('todoapp');
+   });
+});
 
 
 
