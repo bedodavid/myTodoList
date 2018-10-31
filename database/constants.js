@@ -1,6 +1,6 @@
 'use strict';
 
-let constants = {
+const constants = {
   user: {
     USERS_TABLE : "user",
     USERS_ID : "id",

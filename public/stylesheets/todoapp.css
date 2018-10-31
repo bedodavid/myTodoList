@@ -1,26 +1,41 @@
 body{}
-*{}
+*{
+   box-sizing: border-box;
+   margin:0;
+   padding: 0;
+}
 
 .overflow-hidden{
   overflow-y: hidden;
 }
 
 .main-container{
+  overflow-y: auto;
   height: 100%;
   width:100%;
-  display:relative;
+  min-height: 390px;
+  min-width: 250px;
   display: flex;
   flex-direction: row;
-  box-sizing: border-box;
 }
 
 .listside{
   transition: width 100ms ease;
-  width: 350px;
+  flex-basis: 350px;
   z-index: 2;
   position: relative;
   background-color: #E6F4F1;
 }
+.contentside{
+ z-index: 2;
+ width: 100%;
+ background-image: linear-gradient(135deg, #E7FEFD, #E7FEFD 60%,#D9FF98);
+ display: flex;
+ flex-direction: row;
+}
+
+
+
 
 .list-container{
   display: flex;
@@ -28,27 +43,56 @@ body{}
 }
 
 .search-toolbar,
-.user-toolbar,
-.newList-toolbar{
+.newItem-toolbar,
+.user-toolbar{
   background-image: linear-gradient(to right top, #0089BA,#00A7C5, #00C2BB);
   display: flex;
   flex-direction: row;
   height: 50px;
 }
 
+.user-toolbar{
+background-image: linear-gradient(to right top, #C1DDE7, #E7FEFD);
+}
+
 .user-toolbar,
-.newList-toolbar{
+.newItem-toolbar{
  border-top: 1px solid #0089BA;
 }
 
-.newList-toolbar{
+.newItem-toolbar{
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  border-top: 1px solid #808080;
+  display: flex;
+  flex-direction: row;
+  border-radius: 10px;
 }
 
+
+.newItem-toolbar:hover .newItem-text{
+  color:black;
+  cursor: pointer;
+  font-style: italic;
+}
+.newItem-toolbar:hover .newItem-icon-container{
+  background-image: url("/images/addnewHover.png");
+}
+.newItem-icon-container {
+  height: 30px;
+  min-width: 30px;
+  background-image: url("/images/addnew50.png");
+  background-size: 30px 30px;
+  margin:10px 5px 10px 10px;
+}
+.newItem-text {
+  width: 100%;
+  font: 17px Arial;
+  color: white;
+  padding: 15px;
+  vertical-align: middle;
+}
 .toogle-listside{
   padding: 4px 4px 4px 4px;
   width: auto;
@@ -84,37 +128,17 @@ body{}
   width: 44px;
 }
 
-.newList-icon-container {
-  height: 30px;
-  width: 30px;
-  display: flex;
-  align-self: center;
-  margin-left: 10px;
-}
-
-.user-icon,
-.newList-icon{
+.user-icon{
   width: auto;
   height: 100%;
-}
-.user-icon{
   margin: 3px;
 }
-
 .user-toolbar .user-name{
   font: 17px Arial ;
   background-color: inherit;
   border: none;
   padding: 15px;
   margin: 0;
-}
-
-.newList-text{
-  width: 100%;
-  font: 17px Arial;
-  color: white;
-  padding: 15px;
-  vertical-align: middle;
 }
 
 .list-collect{
@@ -147,6 +171,7 @@ body{}
 
 .list-items:focus {
   background-image: linear-gradient( #E6F4F1, #00A7C5, #E6F4F1);
+  outline: none;
 }
 
 .list-items:focus .list-options{
@@ -199,13 +224,6 @@ hr{
 }
 
 
-.main-container .contentside{
- background-color: #c5e1a5;
- z-index: 2;
- width: 100%;
- background-image: linear-gradient(-90deg, #0089BA,#00A7C5, #00C2BB)
-}
-
 .newList-popup-container{
   position: absolute;
   top:10%;
@@ -219,18 +237,18 @@ hr{
   justify-content: center;
 }
 
-.newList-popup-container h3{
+.newList-popup-container h3, .newTask-popup-container h3 {
  text-align: center;
  margin-top: 20px;
  margin-bottom: 0;
 }
-.newList-popup-container .newlistname-input{
+.newItemName-input{
   font: 17px Arial;
   width: 370px;
   margin: 15px;
   padding: 5px 10px 5px 10px;
 }
-.newList-popup-container .add-cancel-buttons{
+.add-cancel-buttons{
   margin: 15px;
   position: relative;
 }
@@ -245,26 +263,123 @@ hr{
   background-color: #00A7C5;
 }
 
-#add-newlist{
+.accept-button{
   position: absolute;
   right: 0;
 }
 
-#cancel-newlist:hover{
+.cancel-button:hover{
  background-color:#D65557;
  color:#CCF6FF;
  border-color: #D65557;
+ transform: scale(1.1)
 }
 
-#add-newlist:hover{
+.accept-button:hover{
  background-color:#A3ED84;
  border-color: #A3ED84;
+ transform: scale(1.1)
+}
+
+
+.newTask-popup-container{
+  position: absolute;
+  top:10%;
+  left: 45%;
+  z-index: 5;
+  width:500px;
+  height:400px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#taskNav{
+  flex-basis: 40px;
+  height: 100%;
+  background-color: #E6F4F1;
+}
+#taskContent{
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+#taskViewMode{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content:space-around;
+  width: 100%;
+  height: 100%;
+}
+
+#taskViewMode li{
+  min-width: 40px;
+  width: 100%;
+  height: 50%;
+  font-size: 18px;
+  line-height: 40px;
+  color: black;
+  background-image: linear-gradient(90deg, #8DF8B7, #C0FFE0, #8DF8B7);
+  border-bottom-left-radius: 15px;
+  border-top-left-radius: 15px;
+  flex-grow: 1;
+  position:relative;
+  writing-mode: tb;
+  text-orientation: upright;
+  text-align: center;
+  cursor: pointer;
+  border:none;
+  border-right: 2px solid #00AAAB;
+}
+
+
+
+#taskViewMode li:hover {
+  background-image: linear-gradient(90deg, #D9FF98, #E7FEFD 90%, #E7FEFD);
+  color: #783864;
+  border: none;
+}
+
+
+#selectedList-name{
+  padding-left: 30px;
+  background-image: linear-gradient(-90deg, #C0FFE0,#CDFFF5, #E7FEFD);
+  height: 50px;
+  margin: 0;
+  border-bottom: 1px solid #AFD5ED;
+  line-height: 50px;
+}
+
+#critPriLab{
+  color:#F71B1B;
+}
+#highPriLab{
+  color:#CA7215;
+}
+#medPriLab{
+  color:#17AD08;
+}
+#lowPriLab{
+  color:#348EFF;
+}
+#noPriLab{
+  color:#656463;
 }
 
 .display-none{
   display: none;
 }
 
-.active{
-  background-color:#0089BA;
+#taskViewMode .activeTaskTab{
+  background-image: linear-gradient(90deg, #A2FFE6, #E7FEFD 90%, #E7FEFD);
+  color: #783864;
+  border-left: 2px solid #00AAAB;
+  border-top: 1px solid #00AAAB;
+  border-bottom: 1px solid #00AAAB;
+  border-right: none;
 }

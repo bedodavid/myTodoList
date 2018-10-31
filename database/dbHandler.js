@@ -1,12 +1,12 @@
 //var User = require('../models/user');
 //var List = require('../models/list');
-var Task = require('../models/task');
-var constants = require('../database/constants')
+let Task = require('../models/task');
+let constants = require('../database/constants')
 
-var mysql = require('mysql'),
+let mysql = require('mysql'),
    async = require('async');
 
-var con = mysql.createPool({
+const con = mysql.createPool({
   connectionLimit: 10,
   host: "localhost",
   user: "root",
@@ -21,7 +21,7 @@ exports.addUser = function(user) {
       tempCont.release();
       throw err;
     } else {
-      var sql = "INSERT INTO " + constants.user.USERS_TABLE + " (" + constants.user.USERS_NAME + ", " + constants.user.USERS_EMAIL + ", " +
+      let sql = "INSERT INTO " + constants.user.USERS_TABLE + " (" + constants.user.USERS_NAME + ", " + constants.user.USERS_EMAIL + ", " +
         constants.user.USERS_PASSWORD + ", " + constants.user.USERS_REGISTER + ") VALUES ('" +
         user.getName + "', '" + user.getEmail + "', '" +
         user.getPassword + "', " + "now()" + ")";
@@ -46,7 +46,7 @@ exports.findUser = function(user) {
         tempCont.release();
         throw err;
       } else {
-        var sql = "SELECT * FROM " + constants.user.USERS_TABLE + " WHERE " + constants.user.USERS_EMAIL + " =? ";
+        let sql = "SELECT * FROM " + constants.user.USERS_TABLE + " WHERE " + constants.user.USERS_EMAIL + " =? ";
         tempCont.query(sql, [user.getEmail], function(err, res) {
           if (err) {
             return reject(err);
@@ -68,7 +68,7 @@ exports.addList = function(list) {
       tempCont.release();
       throw err;
     } else {
-      var sql = "INSERT INTO " + constants.list.LIST_TABLE + " (" + constants.list.LIST_USERID + ", " + constants.list.LIST_NAME + ") VALUES ?"
+      let sql = "INSERT INTO " + constants.list.LIST_TABLE + " (" + constants.list.LIST_USERID + ", " + constants.list.LIST_NAME + ") VALUES ?"
     tempCont.query(sql, [list], function(err, res) {
         if (err) {
           return reject(err);
@@ -90,7 +90,7 @@ exports.getList = function(userID) {
       tempCont.release();
       throw err;
     } else {
-        var sql = "SELECT * FROM " + constants.list.LIST_TABLE + " WHERE " + constants.list.LIST_USERID + " =? ";
+        let sql = "SELECT * FROM " + constants.list.LIST_TABLE + " WHERE " + constants.list.LIST_USERID + " =? ";
       tempCont.query(sql, [userID], function(err, res) {
         if (err) {
           return reject(err);
@@ -111,7 +111,7 @@ exports.getTask = function(userID) {
       tempCont.release();
       throw err;
     } else {
-        var sql = "SELECT * FROM " + constants.task.TASK_TABLE + " WHERE " + constants.task.TASK_USERID + " =? ";
+        let sql = "SELECT * FROM " + constants.task.TASK_TABLE + " WHERE " + constants.task.TASK_USERID + " =? ";
       tempCont.query(sql, [userID], function(err, res) {
         if (err) {
           return reject(err);
