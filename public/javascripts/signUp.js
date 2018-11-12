@@ -19,9 +19,9 @@ function getFocus(input, resp){
   });
 
   $('#input-name').blur(function(){
-    let name= $('#input-name').val();
+    let name= $('#input-name').val().trim();
     let regexName =/^[a-zA-Z][a-zA-Z\s]*$/
-    if (name===""||name===" "){
+    if (name===""){
       $('#nameResp').html("Please enter your name");
       $('#input-name').addClass("input-notValid");
     }else if(name.length<3||(!regexName.test(name))){
@@ -31,9 +31,9 @@ function getFocus(input, resp){
   })
 
   $('#input-email').blur(function(){
-    let email= $('#input-email').val();
+    let email= $('#input-email').val().trim();
     let regexEmail =/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
-    if (email===""||email===" "){
+    if (email===""){
       $('#emailResp').html("Please enter your email");
     }else if(!regexEmail.test(email)){
       $('#emailResp').html("Please enter a valid email");
@@ -42,7 +42,7 @@ function getFocus(input, resp){
 
 
   $('#input-pwd').blur(function(){
-    let pwd= $('#input-pwd').val();
+    let pwd= $('#input-pwd').val().trim();
     let regexPwd =/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/
     if(pwd.length<8){
       $('#pwdResp').html("Password need to be at least 8 characters");

@@ -1,14 +1,14 @@
 'use strict'
 
 class Task {
-  constructor(id, taskName, listID, userID, planedTime, deadLineTime, requrrence, priority, finished) {
+  constructor(id, taskName, listID, userID, planedTime, deadLineTime, requirrence, priority, finished) {
     this.id = id;
-    this.task = taskName;
-    this.listID = listID;
-    this.usersID = userID;
-    this.planedTime = planedTime;
-    this.deadLineTime = deadLineTime;
-    this.requrrence = requrrence;
+    this.taskname = taskName;
+    this.listId = listID;
+    this.usersId = userID;
+    this.reminderDate = planedTime;
+    this.deadline = deadLineTime;
+    this.requirrence = requirrence;
     this.priority = priority;
     this.finished = finished;
     this.setPlanedTime = function(newTime) {

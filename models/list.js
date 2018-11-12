@@ -2,7 +2,7 @@
 class myList {
   constructor(id, userID, listname) {
     this.id = id;
-    this.userID = userID;
+    this.userId = userID;
     this.listname = listname;
 
     this.setListname = function(newName) {

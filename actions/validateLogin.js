@@ -27,7 +27,11 @@ async function valid(user) {
       } else if (resLength > 1) {
         resp.email = "Multiple emails, please contact the Support";
       } else {
-        var newUser = new User(res[0].id, res[0].fullname, res[0].email, res[0].password, res[0].registeredtime);
+        var newUser = new User(
+          res[0].id, res[0].fullname,
+          res[0].email, res[0].password,
+          res[0].registeredtime);
+
         if (user.password!==newUser.password){
           resp.pwd="Password does not match email";
         }else{

@@ -19,7 +19,7 @@ async function login(user) {
         myList = new List(0, 0, "");
       }
       if (myTask === "") {
-        myTask = new Task(0, "", 0, 0, null, null, 0, 0, 0);
+        myTask = new Task(0, "", 0, 0, 0, 0, 0, 0, 0);
       }
     }
     let result = {
