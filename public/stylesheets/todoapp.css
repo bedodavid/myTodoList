@@ -164,20 +164,25 @@ background-image: linear-gradient(to right top, #C1DDE7, #E7FEFD);
  height: 40px;
 }
 
-.list-items{
+.list-items, .filter-items{
   padding: :0 5px 0 5px;
   color:black;
   display:flex;
   flex-direction: row;
   align-items:center;
-  justify-content: space-between;
   height: 100%;
   z-index:3;
 }
+
 .list-items:hover{
   background-image: linear-gradient( #E6F4F1, #AAE0C3 25%, #AAE0C3 75% , #E6F4F1);
   outline: none;
 }
+
+.list-filters-ul list-items{
+  justify-content: flex-start;
+}
+
 
 .focusList {
   background-image: linear-gradient( #E6F4F1, #AAE0C3 25%, #AAE0C3 75% , #E6F4F1);
@@ -384,6 +389,20 @@ hr{
   width: 200px;
 }
 
+#datetimefilter-wrapper{
+  position:relative;
+}
+
+#datetimefilter-container{
+  position: absolute;
+  width:250px;
+  left:70px;
+  top:39px;
+  z-index: 7;
+  background-color: #E7FEFD;
+  width: 200px;
+  box-shadow: 5px 10px 20px rgba(72,218,162,0.3), 0 6px 6px rgba(0,0,0,0.23);
+}
 #priorityFilter-container{
   position: absolute;
   right:10px;
