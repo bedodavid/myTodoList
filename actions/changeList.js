@@ -3,17 +3,27 @@ var List = require('../models/list');
 //var getList = require('./getList');
 var async = require('async');
 
-async function add(user, listName){
+async function addList(user, listName){
    let myList= [[user.id,listName]];
    let result= await db.addList(myList);
    let listId=result.insertId;
    const newList= new List(listId,user.id,listName);
    const stringL=JSON.stringify(newList);
    const jsonList=JSON.parse(stringL);
-   console.log(jsonList);
    return jsonList;
+};
+
+async function updateList(updateObj){
+   const result = await db.updateList(updateObj);
+   return true;
 }
 
+async function deleteList(listID){
+   const result = await db.deleteList(listID);
+   return true;
+}
 
-
-module.exports.add=add;
+module.exports={
+  addList,
+  updateList,
+  deleteList}

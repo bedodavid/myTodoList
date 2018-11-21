@@ -14,7 +14,7 @@ const con = mysql.createPool({
   database: "todolist"
 });
 
-exports.addUser = function(user) {
+function addUser(user) {
   return new Promise(function(resolve, reject) {
     con.getConnection(function(err, tempCont) {
       if (err) {
@@ -43,7 +43,7 @@ exports.addUser = function(user) {
 };
 
 
-exports.findUser = function(user) {
+ function findUser(user) {
   return new Promise(function(resolve, reject) {
     con.getConnection(function(err, tempCont) {
       if (err) {
@@ -68,7 +68,7 @@ exports.findUser = function(user) {
 };
 
 
-exports.addList = function(list) {
+function addList(list) {
   return new Promise(function(resolve, reject) {
     con.getConnection(function(err, tempCont) {
       if (err) {
@@ -94,7 +94,7 @@ exports.addList = function(list) {
   });
 };
 
-exports.getList = function(userID) {
+function getList(userID) {
   return new Promise(function(resolve, reject) {
     con.getConnection(function(err, tempCont) {
       if (err) {
@@ -118,7 +118,49 @@ exports.getList = function(userID) {
   });
 };
 
-exports.getTask = function(userID) {
+function updateList(updateObj) {
+  return new Promise(function(resolve, reject) {
+    con.getConnection(function(err, tempCont) {
+      if (err) {
+        tempCont.release();
+        throw err;
+      } else {
+        let sql = `UPDATE ${constants.list.LIST_TABLE} SET ${constants.list.LIST_NAME} = "${updateObj.listName}" WHERE ${constants.list.LIST_ID} = ${updateObj.listId}`;
+        tempCont.query(sql,function(err, res) {
+          if (err) {
+            return reject(err);
+          } else {
+            resolve(res);
+          }
+        });
+      }
+      tempCont.release();
+    });
+  });
+};
+
+function deleteList(listID) {
+  return new Promise(function(resolve, reject) {
+    con.getConnection(function(err, tempCont) {
+      if (err) {
+        tempCont.release();
+        throw err;
+      } else {
+        let sql = `DELETE FROM ${constants.list.LIST_TABLE} WHERE ${constants.list.LIST_ID} = ${listID}`;
+        tempCont.query(sql,function(err, res) {
+          if (err) {
+            return reject(err);
+          } else {
+            resolve(res);
+          }
+        });
+      }
+      tempCont.release();
+    });
+  });
+};
+
+ function getTask(userID) {
   return new Promise(function(resolve, reject) {
     con.getConnection(function(err, tempCont) {
       if (err) {
@@ -141,7 +183,7 @@ exports.getTask = function(userID) {
   });
 };
 
-exports.addTask = function(task) {
+ function addTask(task) {
   return new Promise(function(resolve, reject) {
     con.getConnection(function(err, tempCont) {
       if (err) {
@@ -170,3 +212,14 @@ exports.addTask = function(task) {
     });
   });
 };
+
+module.exports={
+  addUser,
+  findUser,
+  addList,
+  getList,
+  updateList,
+  deleteList,
+  addTask,
+  getTask
+}

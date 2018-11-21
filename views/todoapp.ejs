@@ -217,7 +217,7 @@
                <% const taskLen=task.length;
                   let dateNumber;
                   for (let i=0; i < taskLen; i++) {
-                  dateNumber=task[i].deadline;                  
+                  dateNumber=task[i].deadline;
                   if (dateNumber==0){
                     dateNumber=task[i].reminderDate;
                   }
@@ -263,7 +263,7 @@
         </div>
 
       </section>
-      <div id="newList-popup-container" class="newList-popup-container display-none">
+      <div id="newList-popup-container" class="list-popup-container display-none">
         <h3> Add new List</h3>
         <form action="/todoapp" method="POST" class="addlist-form" id="addList-form">
           <!--  <input style="visibility:hidden" type="text" name="userID" id="userID" value="<%= user.id %>">-->
@@ -274,6 +274,34 @@
           </div>
         </form>
       </div>
+      <div id="changeList-popup-container" class="list-popup-container display-none">
+        <h3> Change or delete List</h3>
+        <form action="/todoapp" method="POST" class="addlist-form" id="updateList-form">
+          <input style="visibility:hidden" type="text" name="listId" id="changelistId" >
+          <input type="text" name="listName" placeholder="Edit List Name" class="newItemName-input" id="editListName" required>
+          <div id="change-cancel-buttons">
+            <button id="changeList" class="newlist-button accept-button" type="submit">Save</button>
+            <button id="cancel-changeList" class="newlist-button cancel-button" type="button">Cancel</button>
+          </div>
+        </form>
+        <div class="or-separator"></div>
+        <div id="deleteList-div">
+          <div id="deleteList">
+            <span class="delete-icon-container"><img class="delete-icon" src="/images/delete.png" /></span>
+            <span class="delete-list-name">Delete list</span>
+          </div>
+          <div id="confirmDeleteList-container" class="display-none">
+              <p>Are you sure to delete this list?</p>
+              <p>All connected tasks will be also deleted permanenty!</p>
+              <p>This action can't be undone!</p>
+              <div id="deletePermButtons">
+                <span class="confirmButtons" id="no-confirmDeleteList">No</span>
+                <span class="confirmButtons" id="yes-confirmDeleteList">Yes! Delete it!</span>
+              </div>
+          </div>        
+        </div>
+      </div>
+
 
       <div id="newTask-popup-container" class="newTask-popup-container display-none">
         <h3> Add new Task</h3>

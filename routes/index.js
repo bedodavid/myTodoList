@@ -6,8 +6,8 @@ let validateSignUp = require('../actions/validateSignUp');
 let validateLogin = require('../actions/validateLogin');
 let newUser = require('../actions/newUser');
 let loginUser = require('../actions/loginUser');
-let addList = require('../actions/addList');
 let addTask = require('../actions/addTask');
+let changeList = require('../actions/changeList');
 
 
 /* GET home page. */
@@ -138,6 +138,39 @@ router.post('/addTask', function(req, res, next){
      res.redirect('todoapp');
    });
 });*/
+router.put('/todoapp', function(req, res, next){
+  let gotData={};
+  Object.keys(req.body).forEach(function(item){
+    gotData[item]=req.body[item];
+  })
+  if(gotData.hasOwnProperty("listId")){         // request comming from a list update
+    let promiseUpdateList = new Promise((resolve, reject) => {
+      resolve(changeList.updateList(gotData));
+    });
+    promiseUpdateList.then((data)=>{
+      res.json("succes");
+    }).catch((err)=>{console.log(err)});
+  }else{
+
+  }
+});
+
+router.delete('/todoapp', function(req, res, next){
+  let gotData={};
+  Object.keys(req.body).forEach(function(item){
+    gotData[item]=req.body[item];
+  })
+  if(gotData.type==="list"){         // request comming from a list update
+    let promiseUpdateList = new Promise((resolve, reject) => {
+      resolve(changeList.deleteList(gotData.id));
+    });
+    promiseUpdateList.then((data)=>{
+      res.json("succes");
+    }).catch((err)=>{console.log(err)});
+  }else{
+
+  }
+});
 
 router.post('/todoapp', function(req, res, next){
   //req.body.taskname=req.sanitize(req.body.taskname);
@@ -164,7 +197,7 @@ router.post('/todoapp', function(req, res, next){
     let newList=req.body.listName;
     let user=req.session.user;
     let promiseList = new Promise((resolve, reject) => {
-      resolve(addList.add(user,newList));
+      resolve(changeList.addList(user,newList));
     });
      promiseList.then( function (response){
        req.session.list.push(response) ;

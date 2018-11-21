@@ -5,7 +5,7 @@ $(document).ready(function() {
     return parseInt(string.substring(pos + 1));
   }
 
-  function getYesterday(){
+  function getYesterday() {
     return (new Date().setHours(0, 0, 0, 0) - (86400 * 1000));
   }
 
@@ -19,30 +19,127 @@ $(document).ready(function() {
 
   function getMonthAhead() {
     const today = new Date();
-    const nextMonth = new Date( today.getFullYear() + "-" +
-                                (today.getMonth() + 2) + "-" +
-                                today.getDate());
+    const nextMonth = new Date(today.getFullYear() + "-" +
+      (today.getMonth() + 2) + "-" +
+      today.getDate());
     return nextMonth.setHours(0, 0, 0, 0);
   }
 
   function applyFilter(filterName) {
     switch (filterName.trim()) {
-      case "All tasks" :           { filterAllTask();   break; }
-      case "Today" :               { filterDate(0);     break; }
-      case "Tomorrow" :            { filterDate(1);     break; }
-      case "This week" :           { filterBeforeDate("week"); break; }
-      case "This month" :          { filterBeforeDate("month"); break; }
-      case "Critical importance" : { filterPriority(4); break; }
-      case "High importance" :     { filterPriority(3); break; }
-      case "Medium importance" :   { filterPriority(2); break; }
-      case "Low signinficance" :   { filterPriority(1); break; }
-      case "No relevance" :        { filterPriority(0); break; }
-      case "Clear all filters" :   { clearPriorityFilter(); break;}
-      case "Yesterday"         :   {filterDate(-1); break;}
-      case "Expired date"      :   {filterBeforeDate("expired"); break;}
-      case "No due date"       :   {filterBeforeDate("nodate"); break;}
+      case "All tasks":
+        {
+          filterAllTask();
+          break;
+        }
+      case "Today":
+        {
+          filterDate(0);
+          break;
+        }
+      case "Tomorrow":
+        {
+          filterDate(1);
+          break;
+        }
+      case "This week":
+        {
+          filterBeforeDate("week");
+          break;
+        }
+      case "This month":
+        {
+          filterBeforeDate("month");
+          break;
+        }
+      case "Critical importance":
+        {
+          filterPriority(4);
+          break;
+        }
+      case "High importance":
+        {
+          filterPriority(3);
+          break;
+        }
+      case "Medium importance":
+        {
+          filterPriority(2);
+          break;
+        }
+      case "Low signinficance":
+        {
+          filterPriority(1);
+          break;
+        }
+      case "No relevance":
+        {
+          filterPriority(0);
+          break;
+        }
+      case "Clear all filters":
+        {
+          clearPriorityFilter();
+          break;
+        }
+      case "Yesterday":
+        {
+          filterDate(-1);
+          break;
+        }
+      case "Expired date":
+        {
+          filterBeforeDate("expired");
+          break;
+        }
+      case "No due date":
+        {
+          filterBeforeDate("nodate");
+          break;
+        }
     }
   }
+
+  function deleteList(listID) {
+    let updateObj = {
+      expired: 0,
+      yesterday: 0,
+      today: 0,
+      tomorrow: 0,
+      week: 0,
+      month: 0,
+      dateless: 0,
+      crit: 0,
+      high: 0,
+      med: 0,
+      low: 0,
+      none: 0
+    }
+    $("#myList-ul").children().each(function() {
+      if (getListID($(this).children().attr("href")) == listID) {
+        $(this).remove();
+        return true;
+      }
+    });
+    $("#myTask-ul").children().each(function() {
+      const taskListID=$(this).children().find(".taskListId").val();
+      if (taskListID == listID) {
+        const priority = $(this).find(".priority").val();
+        const date = $(this).find(".task-datetime-holder").val();
+        getTaskFilterObj(updateObj, date, priority);
+        $(this).remove();
+      }
+    });
+    for(var key in updateObj){
+      console.log(key+":"+updateObj[key]);
+      if(updateObj[key]>0){
+        updateFilterCount(key, updateObj[key]);
+      }
+    }
+
+    console.log(updateObj);
+  }
+
 
   function filterAllTask() {
     $("#myTask-ul").children().each(function() {
@@ -68,18 +165,18 @@ $(document).ready(function() {
       const today = new Date().setHours(0, 0, 0, 0) / 1000;
       let nextDate;
       if (date != "0") {
-        if (date>=today){
+        if (date >= today) {
           if (filter === "week") {
             nextDate = getWeekAhead() / 1000;
           } else if (filter === "month") {
             nextDate = getMonthAhead() / 1000;
           }
           (date <= nextDate) ? $(this).show(): $(this).hide();
-        }else{
-          (filter==="expired") ? $(this).show(): $ (this).hide();
+        } else {
+          (filter === "expired") ? $(this).show(): $(this).hide();
         }
-      }else{
-        (filter==="nodate") ? $(this).show(): $ (this).hide();
+      } else {
+        (filter === "nodate") ? $(this).show(): $(this).hide();
       }
     });
   }
@@ -97,90 +194,100 @@ $(document).ready(function() {
     });
   }
 
-  function getListsTaskCount(){
-    let listObjCount={};
+  function getListsTaskCount() {
+    let listObjCount = {};
     $("#myTask-ul").children().each(function() {
       const id = $(this).find(".taskListId").val();
-      (listObjCount.hasOwnProperty(id))?(listObjCount[id]++):(listObjCount[id]=1);
+      (listObjCount.hasOwnProperty(id)) ? (listObjCount[id]++) : (listObjCount[id] = 1);
     });
 
-    $("#myList-ul").children().each(function(){
+    $("#myList-ul").children().each(function() {
       Object.keys(listObjCount).some((key) => {
-      if(getListID($(this).children().attr("href"))==key){
-        $(this).find(".list-taskcount").text(listObjCount[key]);
-        delete listObjCount[key];
-        return true;
-      }
-     });
+        if (getListID($(this).children().attr("href")) == key) {
+          $(this).find(".list-taskcount").text(listObjCount[key]);
+          delete listObjCount[key];
+          return true;
+        }
+      });
     });
+  }
+
+  function getTaskFilterObj(obj, date, priority) {
+    // CHECK ALL PRIORITYS OF THE TASKS
+    switch (priority) {
+      case "4": {  obj.crit++;  break;}
+      case "3": {  obj.high++;  break;}
+      case "2": {  obj.med++;   break;}
+      case "1": {  obj.low++;   break;}
+      case "0": {  obj.none++;  break;  }
+      default : {  console.log("Problem with creating priority of checkFiltersStart");
+        }
+    }
+
+    // CHECKS ALL TIME of the task, also format the time we see;
+    if (date > 0) {
+      const yesterday = getYesterday() / 1000;
+      const today = new Date().setHours(0, 0, 0, 0) / 1000;
+      const tomorrow = getTomorrow() / 1000;
+      const thisWeek = getWeekAhead() / 1000;
+      const thisMonth = getMonthAhead() / 1000;
+
+      if (date >= today) {
+        if (date == today) {
+          obj.today++;
+        } else if (date == tomorrow) {
+          obj.tomorrow++;
+        }
+        if (date < thisWeek) {
+          obj.week++;
+        }
+        if (date < thisMonth) {
+          obj.month++;
+        }
+      } else {
+        obj.expired++;
+        if (date == yesterday) {
+          obj.yesterday++;
+        }
+      }
+    } else {
+      obj.dateless++;
+    }
   }
 
 
   function checkFiltersStart() {
     let filterObj = {
-      expired:0, yesterday:0, today: 0, tomorrow: 0, week: 0, month: 0,
-      dateless:0, crit: 0, high: 0, med: 0, low: 0, none: 0
+      expired: 0,
+      yesterday: 0,
+      today: 0,
+      tomorrow: 0,
+      week: 0,
+      month: 0,
+      dateless: 0,
+      crit: 0,
+      high: 0,
+      med: 0,
+      low: 0,
+      none: 0
     }
 
     $("#myTask-ul").children().each(function() {
       const taskCheckBox = $(this).find(".taskCheckBox").is(":checked");
+      const priority = $(this).find(".priority").val();
+      const date = $(this).find(".task-datetime-holder").val();
+      const today = new Date().setHours(0, 0, 0, 0) / 1000;
+      getTaskFilterObj(filterObj, date, priority);
+      const returnDate= showDate(date);                  // this could be done by changing the function before, but then we have an extra return not just the filterObject changes
+
+      $(this).find(".task-datetime").text(returnDate);
+
+      if( date<today){
+        $(this).find(".task-datetime").addClass("pastDateTimeTask");
+      }
       if (taskCheckBox) {
         $(this).find(".task-name").addClass("taskFinished");
       }
-
-      // CHECK ALL PRIORITYS OF THE TASKS
-      const priority = $(this).find(".priority").val();
-       switch (priority) {
-        case "4": { filterObj.crit++;  break; }
-        case "3": { filterObj.high++;  break; }
-        case "2": { filterObj.med++;   break; }
-        case "1": { filterObj.low++;   break; }
-        case "0": { filterObj.none++;  break; }
-        default:  {
-         console.log("Problem with creating priority of checkFiltersStart");
-        }
-      }
-
-      // CHECKS ALL TIME of the task, also format the time we see;
-      const date = $(this).find(".task-datetime-holder").val();
-      if(date>0){
-        const yesterday = getYesterday()/1000;
-        const today = new Date().setHours(0, 0, 0, 0) / 1000;
-        const tomorrow = getTomorrow() / 1000;
-        const thisWeek = getWeekAhead() / 1000;
-        const thisMonth = getMonthAhead() / 1000;
-
-       if (date >= today){
-         if (date == today) {
-           filterObj.today++;
-           $(this).find(".task-datetime").text("Today");
-         }else if (date == tomorrow) {
-           filterObj.tomorrow++;
-           $(this).find(".task-datetime").text("Tomorrow");
-         }else{
-           const dateFormat=timeFormat(date);
-           $(this).find(".task-datetime").text(dateFormat);
-         }
-         if (date < thisWeek) {
-          filterObj.week++;
-         }
-         if (date < thisMonth) {
-          filterObj.month++;
-         }
-       }else{
-         $(this).find(".task-datetime").addClass("pastDateTimeTask");
-         filterObj.expired++;
-         if (date==yesterday){
-           filterObj.yesterday++;
-           $(this).find(".task-datetime").text("Yesterday");
-         }else{
-           const dateFormat=timeFormat(date);
-           $(this).find(".task-datetime").text(dateFormat);
-         }
-       }
-     }else{
-       filterObj.dateless++;
-     }
     });
     return filterObj;
   }
@@ -191,40 +298,39 @@ $(document).ready(function() {
     $("#list-filter-ul").find("a").removeClass("focusList");
   }
 
-  function showDate(deadline,reminder) {
-    let date, dateFormat;
-    (deadline>0)?(date=deadline):(date=reminder);
-    const today = new Date().setHours(0, 0, 0, 0) / 1000;
+  function showDate(date) {
+        const today = new Date().setHours(0, 0, 0, 0) / 1000;
     const tomorrow = getTomorrow() / 1000;
-    const yesterday = getYesterday()/1000;
+    const yesterday = getYesterday() / 1000;
 
-    if (date>0){
-      if(date == today){
+    if (date > 0) {
+      if (date == today) {
         dateFormat = "Today";
-      } else if(date == tomorrow){
+      } else if (date == tomorrow) {
         dateFormat = "Tomorrow";
-      }else if(date == yesterday){
+      } else if (date == yesterday) {
         dateFormat = "Yesterday";
-      }else {
-        dateFormat=timeFormat(date)} ;
-    }else{
-      dateFormat="";
+      } else {
+        dateFormat = timeFormat(date)
+      };
+    } else {
+      dateFormat = "";
     }
     return dateFormat;
   }
 
 
-  function timeFormat(time){
+  function timeFormat(time) {
     const datetime = new Date(time * 1000);
     let date = datetime.getDate();
-    let month = datetime.getMonth()+1;
-    if (date < 10){
-      date="0"+date;
+    let month = datetime.getMonth() + 1;
+    if (date < 10) {
+      date = "0" + date;
     }
-    if (month < 10){
-      month="0"+month;
+    if (month < 10) {
+      month = "0" + month;
     }
-    return("" +datetime.getFullYear()+ "." +month+ "." +date);
+    return ("" + datetime.getFullYear() + "." + month + "." + date);
   }
 
 
@@ -240,73 +346,115 @@ $(document).ready(function() {
     })
   }
 
-  function incrementCount(countString){
+  function incrementCount(countString) {
     let count;
-    if (countString!==""){
-      count= parseInt(countString)+1;
-    }else{
-      count=1;
+    if (countString !== "") {
+      count = parseInt(countString) + 1;
+    } else {
+      count = 1;
     }
     return count;
   }
 
-  function incrFilterCount(key){
+  function updateFilterCount(key, value) {
     const filterID = key + `TaskFilter`;
-    $("#"+filterID).parent().show();
-    const taskcount=$("#" + filterID).find(".list-taskcount").text();
-    const updatedCount=incrementCount(taskcount)
+    //$("#" + filterID).parent().show();
+    const taskcount = parseInt($("#" + filterID).find(".list-taskcount").text());
+    const updatedCount = taskcount-value;
+    if (updatedCount>0){
+      $("#" + filterID).find(".list-taskcount").text(updatedCount);
+    }else if(updatedCount==0){
+      $("#" + filterID).find(".list-taskcount").text("");
+      $("#" + filterID).parent().hide();
+    }else{
+      console.log("Problem with updating counts after deleteList")
+    }
+  }
+
+  function incrFilterCount(key) {
+    const filterID = key + `TaskFilter`;
+    $("#" + filterID).parent().show();
+    const taskcount = $("#" + filterID).find(".list-taskcount").text();
+    const updatedCount = incrementCount(taskcount)
     $("#" + filterID).find(".list-taskcount").text(updatedCount);
   }
 
+  function updateListbyID(listID, listname) {
+    $("#myList-ul").children().each(function() {
+      if (getListID($(this).children().attr("href")) == listID) {
+        $(this).children().find(".list-name").text(listname);
+        return true;
+      }
+    });
+  }
 
-   function incrListCount(listID){
-     $("#myList-ul").children().each(function(){
-        if(getListID($(this).children().attr("href"))==listID){
-         const taskcount=$(this).find(".list-taskcount").text();
-         const updatedCount=incrementCount(taskcount)
-         $(this).find(".list-taskcount").text(updatedCount);
-         return true;
-       }
-      });
-     }
+  function incrListCount(listID) {
+    $("#myList-ul").children().each(function() {
+      if (getListID($(this).children().attr("href")) == listID) {
+        const taskcount = $(this).find(".list-taskcount").text();
+        const updatedCount = incrementCount(taskcount)
+        $(this).find(".list-taskcount").text(updatedCount);
+        return true;
+      }
+    });
+  }
 
-  function updateFilterListCountNewTask(obj){
+  function updateFilterListCountNewTask(obj) {
     //let showDateFormat=showDate(obj.deadline,obj.reminderDate);
     let date;
-    console.log(obj);
-    (obj.deadline>0) ? (date=obj.deadline):(date=obj.reminderDate);
-    console.log("......");
-    if (date>0){
+    (obj.deadline > 0) ? (date = obj.deadline) : (date = obj.reminderDate);
+    if (date > 0) {
       const today = new Date().setHours(0, 0, 0, 0) / 1000;
       const tomorrow = getTomorrow() / 1000;
       const thisWeek = getWeekAhead() / 1000;
       const thisMonth = getMonthAhead() / 1000;
-      if(date == today){
+      if (date == today) {
         incrFilterCount("today");
-      }else if(date==tomorrow){
+      } else if (date == tomorrow) {
         incrFilterCount("tomorrow");
       }
-      if (date> today){
+      if (date > today) {
         if (date < thisWeek) {
-         incrFilterCount("week");
+          incrFilterCount("week");
         }
         if (date < thisMonth) {
-         incrFilterCount("month");
+          incrFilterCount("month");
         }
       }
     }
 
     const priority = obj.priority;
-     switch (priority) {
-      case 4: { incrFilterCount("crit");  break; }
-      case 3: { incrFilterCount("high");  break; }
-      case 2: { incrFilterCount("med");   break; }
-      case 1: { incrFilterCount("low");   break; }
-      case 0: { incrFilterCount("none");  break; }
-      default:  {
-       console.log("Problem with creating priority of checkFiltersStart");
-      }
-     }
+    switch (priority) {
+      case 4:
+        {
+          incrFilterCount("crit");
+          break;
+        }
+      case 3:
+        {
+          incrFilterCount("high");
+          break;
+        }
+      case 2:
+        {
+          incrFilterCount("med");
+          break;
+        }
+      case 1:
+        {
+          incrFilterCount("low");
+          break;
+        }
+      case 0:
+        {
+          incrFilterCount("none");
+          break;
+        }
+      default:
+        {
+          console.log("Problem with creating priority of checkFiltersStart");
+        }
+    }
     const listId = obj.listId;
     incrListCount(listId);
   }
@@ -317,11 +465,13 @@ $(document).ready(function() {
     $("#newTask-toolbar").hide();
     filterAllTask();
     let filterTaskObj = checkFiltersStart();
-    console.log(filterTaskObj);
     showOnlyActiveFilters(filterTaskObj);
     getListsTaskCount();
   }
 
+
+  //-----Initialize and Listen to events
+  //........................................
   startListName();
 
   $("#myTask-ul").on("click", "input", function() {
@@ -348,13 +498,13 @@ $(document).ready(function() {
     applyFilter(filterName);
   });
 
-$("#allTaskFilter").on("click", function(event){
-  listFocusRemove();
-  $(this).addClass("focusList");
-  $("#selectedList-name").text("All tasks");
-  $("#newTask-toolbar").hide();
-  applyFilter("All tasks");
-})
+  $("#allTaskFilter").on("click", function(event) {
+    listFocusRemove();
+    $(this).addClass("focusList");
+    $("#selectedList-name").text("All tasks");
+    $("#newTask-toolbar").hide();
+    applyFilter("All tasks");
+  })
 
   $("#list-collect").on("click", "a", function(event) {
     let focused = document.activeElement;
@@ -365,12 +515,18 @@ $("#allTaskFilter").on("click", function(event){
     listFocusRemove();
     $(focused).addClass("focusList");
     $("#newTask-toolbar").show();
+    $("#changeList-popup-container").hide();
     const id = getListID($(focused).attr("href"));
     $("#taskListIdForm").val(id);
     $("#myTask-ul").children().each(function() {
       const taskListId = $(this).find(".taskListId").val();
       (taskListId == id) ? $(this).show(): $(this).hide();
     })
+    if (event.target.className === "list-options") {
+      $("#changeList-popup-container").toggle();
+      $("#confirmDeleteList-container").hide();
+      $("#changelistId").val(id);
+    }
   });
 
   $("#filter-priority-ul").on("click", "a", function(event) {
@@ -440,6 +596,25 @@ $("#allTaskFilter").on("click", function(event){
   });
 
 
+  $("#updateList-form").submit(function(e) {
+    e.preventDefault();
+    const updatedListName = $('#editListName').val().trim();
+    if (updatedListName !== "") {
+      const updatedList = $(this).serialize();
+      const listID = $('#changelistId').val();
+      $.ajax({
+        type: 'PUT',
+        url: "/todoapp",
+        data: updatedList
+      }).done(function() {
+        updateListbyID(listID, updatedListName);
+        $("#changeList-popup-container").hide();
+      }).fail(function(err) {
+        console.log("fail...........");
+        console.log(err);
+      })
+    }
+  });
 
   $('#addTask-form').submit(function(e) {
     e.preventDefault();
@@ -448,22 +623,26 @@ $("#allTaskFilter").on("click", function(event){
       const taskData = $(this).serialize();
       $.post('todoapp', taskData, function(data) {
         const lastPos = $("#myTask-ul").children().length;
-        const datetime = showDate(data.deadline, data.reminderDate);
+        let date=(data.deadline > 0) ? data.deadline : data.reminderDate;
+        const datetime = showDate(date);
         updateFilterListCountNewTask(data);
         $("#myTask-ul").append(
           `<li class="task-items-li">
             <a class="task-items" tabindex="${lastPos+100} " id="taskItem${lastPos}">
-              <input type="hidden" class="taskId" value="${data.id}">
-              <input type="hidden" class="taskListId" value="${data.listId}">
-              <input type="hidden" class="priority" value="${data.priority}">
               <input type="checkbox" class="taskCheckBox" id="taskCheckBox${lastPos}">
               <span class="task-name priority${data.priority}">${data.taskname}</span>
               <span class="task-datetime">${datetime}</span>
               <span class="task-options" title="List options" style="visibility:hidden"></span>
+              <input type="hidden" class="task-datetime-holder" value="${date}">
+              <input type="hidden" class="taskId" value="${data.id}">
+              <input type="hidden" class="taskListId" value="${data.listId}">
+              <input type="hidden" class="priority" value="${data.priority}">
             </a>
          </li>`
-       );
-      }).fail(function(error){ alert(error)});
+        );
+      }).fail(function(error) {
+        alert(error)
+      });
 
       $("#newTask-popup-container").hide();
     }
@@ -487,10 +666,42 @@ $("#allTaskFilter").on("click", function(event){
             </a>
           </li>`
         )
-     }).fail(function(error){ alert(error)});
-    $("#newList-popup-container").hide();
+      }).fail(function(error) {
+        alert(error)
+      });
+      $("#newList-popup-container").hide();
     }
   });
+
+
+  $("#deleteList").on("click", function() {
+    $("#confirmDeleteList-container").show();
+  });
+
+  $("#no-confirmDeleteList").on("click", function() {
+    $("#confirmDeleteList-container").hide();
+  });
+  $("#yes-confirmDeleteList").on("click", function() {
+    const deleteListID = $("#changelistId").val();
+    const deleteObj = JSON.parse(JSON.stringify({
+      type: "list",
+      id: deleteListID
+    }));
+    $.ajax({
+      type: 'DELETE',
+      url: "/todoapp",
+      data: deleteObj
+    }).done(function() {
+      //updateListbyID(listID,updatedListName);
+      $("#changeList-popup-container").hide();
+      deleteList(deleteListID);
+      // get and delete all list/+task+updateFilter
+    }).fail(function(err) {
+      console.log("fail...........");
+      console.log(err);
+    })
+  })
+
 
 
   $("#priorityfilter-wrapper").hover(
