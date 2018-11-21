@@ -296,6 +296,7 @@ $(document).ready(function() {
     $("#date-filters-ul").find("a").removeClass("focusList");
     $("#myList-ul").find("a").removeClass("focusList");
     $("#list-filter-ul").find("a").removeClass("focusList");
+    $("#allTaskFilter").removeClass("focusList");
   }
 
   function showDate(date) {
@@ -710,16 +711,17 @@ $(document).ready(function() {
     },
     function() {
       $("#priorityFilter-container").slideUp('medium');
-    }
-  );
+    });
 
-  $("#datetimefilter-wrapper").hover(
-    function() {
-      $("#datetimefilter-container").slideDown('medium');
-    },
-    function() {
-      $("#datetimefilter-container").slideUp('medium');
-    }
-  );
+  $("#datetimefilter-wrapper").on("click", function() {
+    $("#datetimefilter-container").slideDown('medium');
+  });
+  $("#datetimefilter-container").on("mouseleave", function() {
+    $("#datetimefilter-container").slideUp('medium');
+  });
+  $("#datetimefilter-wrapper").on("mouseleave", function() {
+    $("#datetimefilter-container").slideUp('medium');
+  });
+
 
 });
