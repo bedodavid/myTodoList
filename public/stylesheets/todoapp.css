@@ -66,6 +66,7 @@ a{
   display: flex;
   flex-direction: row;
   min-height: 50px;
+  max-height: 50px;
 }
 
 .user-toolbar{
@@ -77,6 +78,11 @@ background-image: linear-gradient(to right top, #C1DDE7, #E7FEFD);
  border-top: 1px solid #0089BA;
 }
 
+
+#userShow-container{
+  display: flex;
+  flex-direction: row;
+}
 .newItem-toolbar{
   width: 100%;
   border-radius: 10px;

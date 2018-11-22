@@ -56,7 +56,7 @@
               </span><span class="user-name"><%= user.name %></span>
               <input type="hidden" class="user-id" id="user-id" value="<%= user.id %>">
             </div>
-            <div id="userOptions-container display-none">
+            <div id="userOptions-container" class="display-none">
               <p id="changephoto">Change your photo</p>
             </div>
           </div>
@@ -248,6 +248,9 @@
                     <% } %>
                   </ul>
                 </div>
+                <div id="finishedTask-container">
+
+                </div>
               </div>
               <div id="newTask-toolbar" class="newItem-toolbar">
                 <div class="newItem-icon-container"></div>
@@ -272,7 +275,7 @@
       </section>
       <div id="newList-popup-container" class="list-popup-container display-none">
         <h3> Add new List</h3>
-        <form action="/todoapp" method="POST" class="addlist-form" id="addList-form">
+        <form action="/lists/create" method="POST" class="addlist-form" id="addList-form">
           <!--  <input style="visibility:hidden" type="text" name="userID" id="userID" value="<%= user.id %>">-->
           <input type="text" name="listName" placeholder="New List Name" class="newItemName-input" id="newListName" required>
           <div class="add-cancel-buttons">
@@ -283,7 +286,7 @@
       </div>
       <div id="changeList-popup-container" class="list-popup-container display-none">
         <h3> Change or delete List</h3>
-        <form action="/todoapp" method="POST" class="addlist-form" id="updateList-form">
+        <form action="/lists/update" method="POST" class="addlist-form" id="updateList-form">
           <input style="visibility:hidden" type="text" name="listId" id="changelistId">
           <input type="text" name="listName" placeholder="Edit List Name" class="newItemName-input" id="editListName" required>
           <div id="change-cancel-buttons">
@@ -313,7 +316,7 @@
 
       <div id="newTask-popup-container" class="newTask-popup-container display-none">
         <h3> Add new Task</h3>
-        <form action="/todoapp" method="POST" id="addTask-form">
+        <form action="/tasks/create" method="POST" id="addTask-form">
           <!--  <input style="visibility:hidden" type="text" name="userID" id="userID" value="<%= user.id %>">-->
           <input type="text" id="taskName" name="taskname" placeholder="Enter Task Name" class="newItemName-input" required>
           <input type="hidden" id="taskListIdForm" name="listId" value="">

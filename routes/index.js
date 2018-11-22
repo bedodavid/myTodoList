@@ -15,6 +15,10 @@ router.get('/', function(req, res, next) {
   res.render('index');
 });
 
+router.get('/todoapp', function(req, res, next) {
+  res.render('todoapp',{user: req.session.user, list:req.session.list, task:req.session.task});
+});
+
 router.get('/signUp', function(req, res, next) {
   const user = {name: "", email: "", psw: ""};
   const errResp = {name: "", email: "", psw: ""};
@@ -36,76 +40,6 @@ router.get('/login', function(req, res, next) {
   res.render('login',  {resp:req.session.resp });
 });
 
-
-
-router.get('/todoapp', function(req, res, next) {
-  res.render('todoapp',{user: req.session.user, list:req.session.list, task:req.session.task});
-
-});
-
-
-
-
-router.post('/register', function(req, res, next){
-  const fullName= req.body.fullName;
-  const email = req.body.email;
-  const password = req.body.pwd;
-  var user = new User(0,fullName,email,password);
-
-  let promise = new Promise((resolve, reject) => {
-    resolve(validateSignUp.valid(user));
-  });
-
-  promise.then(function(result){
-    let succesValidate=result.formvalid;
-    if (!succesValidate){
-      req.session.user= result.user;
-      req.session.resp = result.resp;
-      res.redirect('signUp');
-    }else{
-      let promiseResp = new Promise((resolve, reject) => {
-        resolve(newUser.newUser(user));
-      });
-      promiseResp.then(function(response){
-        let emptyTask = new Task(0,"",0,0,0,0,0,0,0);
-        req.session.user= response.user;
-        req.session.list= response.list;
-        req.session.task=emptyTask;
-        res.redirect('/todoapp');
-      })
-    }
-  })
-  .catch(e=>{console.error(e)});
- });
-
-
- router.post('/login', function(req, res, next){
-   const email = req.body.email;
-   const password = req.body.pwd;
-   let user = new User(0,"",email,password);
-   let promise = new Promise((resolve, reject) => {
-     resolve(validateLogin.valid(user));
-   });
-
-   promise.then(function(result){
-     let succesValidate=result.formvalid;
-     if (!succesValidate){
-       req.session.resp = result.resp;
-       res.redirect('login');
-     }else{
-       let promiseResp = new Promise((resolve, reject) => {
-         resolve(loginUser.login(result.user));
-       });
-       promiseResp.then(function(response){
-         req.session.user= response.user;
-         req.session.list= response.list;
-         req.session.task=response.task;
-         res.redirect('/todoapp');
-       });
-     }
-   })
-   .catch(e=>{console.error(e)});
-  });
 
 /*router.post('/addList', function(req, res, next){
   let newList=req.body.listName;
@@ -138,74 +72,11 @@ router.post('/addTask', function(req, res, next){
      res.redirect('todoapp');
    });
 });*/
-router.put('/todoapp', function(req, res, next){
-  let gotData={};
-  Object.keys(req.body).forEach(function(item){
-    gotData[item]=req.body[item];
-  })
-  if(gotData.hasOwnProperty("listId")){         // request comming from a list update
-    let promiseUpdateList = new Promise((resolve, reject) => {
-      resolve(changeList.updateList(gotData));
-    });
-    promiseUpdateList.then((data)=>{
-      res.json("succes");
-    }).catch((err)=>{console.log(err)});
-  }else{
 
-  }
-});
 
-router.delete('/todoapp', function(req, res, next){
-  let gotData={};
-  Object.keys(req.body).forEach(function(item){
-    gotData[item]=req.body[item];
-  })
-  if(gotData.type==="list"){         // request comming from a list update
-    let promiseUpdateList = new Promise((resolve, reject) => {
-      resolve(changeList.deleteList(gotData.id));
-    });
-    promiseUpdateList.then((data)=>{
-      res.json("succes");
-    }).catch((err)=>{console.log(err)});
-  }else{
 
-  }
-});
 
-router.post('/todoapp', function(req, res, next){
-  //req.body.taskname=req.sanitize(req.body.taskname);
-  let gotData={};
-  Object.keys(req.body).forEach(function(item){
-    gotData[item]=req.body[item];
-  })
 
-  if (gotData.hasOwnProperty("taskname")){
-    gotData.userId= req.session.user.id;
-    let promiseTask = new Promise((resolve, reject) => {
-      resolve(addTask.add(gotData));
-    });
 
-     promiseTask.then( function (response){
-       if (!Array.isArray(req.session.task)){
-         req.session.task=[];
-       }
-       req.session.task.push(response) ;
-       res.json(response);
-     }).catch(err=>console.error(err));
-  }
-  else{
-    let newList=req.body.listName;
-    let user=req.session.user;
-    let promiseList = new Promise((resolve, reject) => {
-      resolve(changeList.addList(user,newList));
-    });
-     promiseList.then( function (response){
-       req.session.list.push(response) ;
-       //const thisListData=JSON.stringify(response);
-       res.json(response);
-     });
-  }
-
-});
 
  module.exports = router;

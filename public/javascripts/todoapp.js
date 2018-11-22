@@ -605,7 +605,7 @@ $(document).ready(function() {
       const listID = $('#changelistId').val();
       $.ajax({
         type: 'PUT',
-        url: "/todoapp",
+        url: "/lists/update",
         data: updatedList
       }).done(function() {
         updateListbyID(listID, updatedListName);
@@ -622,7 +622,7 @@ $(document).ready(function() {
     const taskName = $('#taskName').val().trim();
     if (taskName !== "") {
       const taskData = $(this).serialize();
-      $.post('todoapp', taskData, function(data) {
+      $.post('tasks/create', taskData, function(data) {
         const lastPos = $("#myTask-ul").children().length;
         let date=(data.deadline > 0) ? data.deadline : data.reminderDate;
         const datetime = showDate(date);
@@ -655,7 +655,7 @@ $(document).ready(function() {
     const listName = $('#newListName').val().trim();
     if (listName !== "") {
       const listData = $(this).serialize();
-      $.post('todoapp', listData, function(data) {
+      $.post('lists/create', listData, function(data) {
         const lastPos = $("#myList-ul").children().length;
         $("#myList-ul").append(
           `<li role="menuitem" class="list-items-li">
@@ -690,7 +690,7 @@ $(document).ready(function() {
     }));
     $.ajax({
       type: 'DELETE',
-      url: "/todoapp",
+      url: "/lists/delete",
       data: deleteObj
     }).done(function() {
       //updateListbyID(listID,updatedListName);

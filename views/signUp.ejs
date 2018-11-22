@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="signUpContainer">
-      <form id="signUp-form" action="/register" method="POST" autocomplete="off">
+      <form id="signUp-form" action="/users/register" method="POST" autocomplete="off">
         <input id="input-name" class="input-name" placeholder="Your name" type="text" name="fullName" id="fullName" value="<%= user.name %>" required>
         <label id="nameResp" class="signUpresponse"><%= resp.name %></label>
         <input id="input-email" class="input-email" placeholder="Email" type="email" name="email" id="email" value="<%= user.email %>" required>
